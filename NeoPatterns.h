@@ -1,7 +1,7 @@
 #include <Adafruit_NeoPixel.h>
 
 // Pattern types supported:
-enum pattern { NONE, RAINBOW_CYCLE, THEATER_CHASE, COLOR_WIPE, SCANNER, FADE, SINGLERANDOM };
+enum pattern { NONE, RAINBOW_CYCLE, THEATER_CHASE, COLOR_WIPE, SCANNER, FADE, SINGLERANDOM, ALLRANDOM };
 // Patern directions supported:
 enum direction { FORWARD, REVERSE };
 
@@ -63,6 +63,10 @@ class NeoPatterns : public Adafruit_NeoPixel {
 
         case SINGLERANDOM:
           SingleRandomUpdate();
+          break;
+
+        case ALLRANDOM:
+          AllRandomUpdate();
           break;
 
         default:
@@ -306,7 +310,34 @@ class NeoPatterns : public Adafruit_NeoPixel {
     Increment();
   }
 
+  // --- All Random ---
 
+  void AllRandom(uint8_t interval, uint16_t steps, direction dir = FORWARD) {
+    // Create random seed by reading the analog noise on pin 0
+    Serial.println("");
+    Serial.println("--- All Random ---");
+    Serial.print("Interval: ");
+    Serial.println(interval);
+    Serial.print("Steps: ");
+    Serial.println(steps);
+
+    ActivePattern = ALLRANDOM;
+    Interval = interval;
+    TotalSteps = steps;
+    Index = 0;
+    Direction = dir;
+  }
+
+  void AllRandomUpdate(){
+
+    // Random Color
+    for(int pixel = 0; pixel < numPixels(); pixel++) {
+      setPixelColor(pixel, Color(random(0, 255), random(0, 255), random(0, 255)));
+    }
+
+    show();
+    Increment();
+  }
 
   // --- Scanner ---
 

@@ -37,7 +37,7 @@ void loop() {
 // Ring 2 Completion Callback
 void LongBoiComplete() {
 
-  switch(random(0, 6)) {
+  switch(random(0, 7)) {
 
     case 0:
       LongBoi.RainbowCycle(random(0, 20));
@@ -76,6 +76,10 @@ void LongBoiComplete() {
       if (randBool()){
         LongBoi.Reverse();
       }
+      break;
+
+    case 6:
+      LongBoi.AllRandom(random(50, 100), random(20, 50));
       break;
 
     default:
