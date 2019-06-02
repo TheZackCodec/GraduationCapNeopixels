@@ -37,7 +37,7 @@ void loop() {
 // Ring 2 Completion Callback
 void LongBoiComplete() {
 
-  switch(random(0, 7)) {
+  switch(random(0, 8)) {
 
     case 0:
       LongBoi.RainbowCycle(random(0, 20));
@@ -51,34 +51,38 @@ void LongBoiComplete() {
       break;
 
     case 2:
+      LongBoi.PersistentRandom(randColor(), 20, random(50, 300), randBool());
+      break;
+
+    case 3:
       LongBoi.Fade(randColor(), randColor(), 200, random(5, 15));
       if (randBool()){
         LongBoi.Reverse();
       }
       break;
 
-    case 3:
+    case 4:
       LongBoi.TheaterChase(randColor(), LongBoi.Color(0,0,0), random(50, 100));
       if (randBool()){
         LongBoi.Reverse();
       }
       break;
 
-    case 4:
+    case 5:
       LongBoi.Scanner(randColor(), random(10, 50));
       if (randBool()){
         LongBoi.Reverse();
       }
       break;
 
-    case 5:
+    case 6:
       LongBoi.ColorWipe(randColor(), random(10, 50));
       if (randBool()){
         LongBoi.Reverse();
       }
       break;
 
-    case 6:
+    case 7:
       LongBoi.AllRandom(random(50, 100), random(20, 50));
       break;
 

@@ -1,7 +1,7 @@
 #include <Adafruit_NeoPixel.h>
 
 // Pattern types supported:
-enum pattern { NONE, RAINBOW_CYCLE, THEATER_CHASE, COLOR_WIPE, SCANNER, FADE, SINGLERANDOM, ALLRANDOM };
+enum pattern { NONE, RAINBOW_CYCLE, THEATER_CHASE, COLOR_WIPE, SCANNER, FADE, SINGLERANDOM, ALLRANDOM, PERSISTENTRANDOM };
 // Patern directions supported:
 enum direction { FORWARD, REVERSE };
 
@@ -67,6 +67,10 @@ class NeoPatterns : public Adafruit_NeoPixel {
 
         case ALLRANDOM:
           AllRandomUpdate();
+          break;
+
+        case PERSISTENTRANDOM:
+          PersistentRandomUpdate();
           break;
 
         default:
@@ -296,6 +300,59 @@ class NeoPatterns : public Adafruit_NeoPixel {
 
     // display all zeros
     show();
+
+    // Select random pixel
+    int pixel = random(0, numPixels());
+
+    // Random Color
+    if (randomSwitch){
+      Color1 = Color(random(0, 255), random(0, 255), random(0, 255));
+    }
+
+    setPixelColor(pixel, Color1);
+    show();
+    Increment();
+  }
+
+  // --- Persistent Random ---
+
+  void PersistentRandom(uint32_t color1, uint8_t interval, uint16_t genCount, bool rand, direction dir = FORWARD) {
+    // Create random seed by reading the analog noise on pin 0
+    Serial.println("");
+    Serial.println("--- Persistent Random ---");
+    Serial.print("Random: ");
+    if (rand) { Serial.println("True"); } else { Serial.println("False"); }
+    Serial.print("Interval: ");
+    Serial.println(interval);
+    Serial.print("Num Pixels: ");
+    Serial.println(genCount);
+
+    if (rand) {
+      randomSwitch = true;
+    } else {
+      randomSwitch = false;
+      Color1 = color1;
+      Serial.print("Color: ");
+      Serial.println(color1);
+    }
+
+    ActivePattern = PERSISTENTRANDOM;
+    Interval = interval;
+    TotalSteps = genCount;
+    Color1 = color1;
+    Index = 0;
+    Direction = dir;
+
+    // zero out outer_strip
+    for(int pixel = 0; pixel < numPixels(); pixel++) {
+      setPixelColor(pixel, 0, 0, 0);
+    }
+
+    // display all zeros
+    show();
+  }
+
+  void PersistentRandomUpdate(){
 
     // Select random pixel
     int pixel = random(0, numPixels());
